@@ -48,7 +48,16 @@
             const saveButton = await whenElementQuerySelectorAsync(form, '.btn.btn-primary[ng-bind=saveDefaultTitle]');
             await whenEventDispatchedAsync(saveButton, 'click');
             const dateField = form.querySelector('input[input-date][ng-model="selectedEntry.Dt"]');
-            return dateField.value;
+            const americanDateValue = dateField.value;
+            // See issue #1: even though this is formatted as an American date and it works
+            // because the date picker stores the selected date behind the scenes in state
+            // somewhere, it isn’t possible to programmatically input this value when using
+            // a non-American locale such as Korean or Japanese. So format it into the standard
+            // format.
+            const parts = /(\d+)\/(\d)+\/(\d+)/.exec(americanDateValue);
+            return new Intl.DateTimeFormat('en-us', {
+              calendar: 'iso8601',
+            }).format(new Date(((new Date().getYear() + 1900) / 100 |0) * 100 + (parts[3]|0), parts[1] - 1, parts[2]));
           } finally {
             document.body.removeChild(messageDiv);
           }
