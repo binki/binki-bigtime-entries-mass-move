@@ -54,7 +54,7 @@
             // somewhere, it isn’t possible to programmatically input this value when using
             // a non-American locale such as Korean or Japanese. So format it into the standard
             // format.
-            const parts = /(\d+)\/(\d)+\/(\d+)/.exec(americanDateValue);
+            const parts = /(\d+)\/(\d+)\/(\d+)/.exec(americanDateValue);
             return new Intl.DateTimeFormat('en-us', {
               calendar: 'iso8601',
             }).format(new Date(((new Date().getYear() + 1900) / 100 |0) * 100 + (parts[3]|0), parts[1] - 1, parts[2]));
