@@ -24,9 +24,16 @@
     }
     console.log('on daily timesheet screen');
   	const dailyPlannerDataUl = await whenElementQuerySelectorAsync(document.body, 'ul.DailyPlannerData');
+    const getEntries = () => [...dailyPlannerDataUl.querySelectorAll('li.entry')].filter(entry => {
+      // See #3. Want to transparently skip over entries which are read-only (locked) (!IsNew).
+      // We can find the hidden lock icon’s element to detect that this is *not* locked.
+      return entry.querySelector('.icon-bt-locked.ng-hide');
+    });
+    const countEntries = () => getEntries().length;
     if (!testIfHrefIsDaily()) {
       continue;
     }
+    const getEntry = () => getEntries()[0];
     const uiLi = document.createElement('li');
     const moveAllButton = document.createElement('button');
     moveAllButton.textContent = 'Move All';
@@ -35,10 +42,9 @@
       moveAllButton.disabled = true;
       try {
 				const form = await whenElementQuerySelectorAsync(document.body, 'form[validation-object=selectedEntry]');
-        const countEntries = () => dailyPlannerDataUl.querySelectorAll('li.entry').length;
         let entryCount = countEntries();
         const chosenDate = await (async () => {
-          const entry = dailyPlannerDataUl.querySelector('li.entry');
+          const entry = getEntry();
           entry.click();
           const messageDiv = document.createElement('div');
           messageDiv.textContent = 'Choose the date and press Save to move all.';
@@ -69,7 +75,7 @@
           entryCount = countEntries();
           console.log(`now there are ${entryCount} entries`);
           // Apparently extra waiting is still necessary for some reason?
-          const entry = dailyPlannerDataUl.querySelector('li.entry');
+          const entry = getEntry();
           if (!entry) {
             console.log('no more entries');
             break;
