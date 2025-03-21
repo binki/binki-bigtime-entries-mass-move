@@ -85,6 +85,7 @@
             cancelable: true,
             data: chosenDate,
           }));
+          // It is critical that the below selector asserts that it is a Save button and not a Copy button. Otherwise, we might accidentally duplicate an entry instead of moving an entry. This is currently done by checking ng-bind.
           (await whenElementQuerySelectorAsync(form, '.btn.btn-primary[ng-bind=saveDefaultTitle]')).click();
         }
       } finally {
