@@ -15,7 +15,7 @@
 (async () => {
   console.log('loaded');
   function testIfHrefIsDaily() {
-    return /#\/timesheet\/daily\/\d+\/\d+$/.test(window.location.href);
+    return /#\/timesheet\/daily(?:\/\d+\/\d+)?$/.test(window.location.href);
   }
   while (true) {
     if (!testIfHrefIsDaily()) {
