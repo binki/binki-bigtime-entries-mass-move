@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     binki-bigtime-entries-mass-move
 // @homepageURL https://github.com/binki/binki-bigtime-entries-mass-move
-// @version  1.1.1
+// @version  1.1.2
 // @match https://*.bigtime.net/bigtime
 // @match https://*.bigtime.net/bigtime/*
 // @match https://*.bigtime.net/Bigtime
