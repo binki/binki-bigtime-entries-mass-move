@@ -24,7 +24,8 @@
   }
   while (true) {
     if (!testIfHrefIsDaily()) {
-      await whenEventDispatchedAsync(window, 'hashchange');
+      // When loading initially, the hash will change without hashchange firing. Fortunately navigate fires.
+      await whenEventDispatchedAsync(navigation, 'navigate');
       continue;
     }
     console.log('on daily timesheet screen');
